@@ -157,3 +157,12 @@ celsiusBtn.addEventListener("click", () => toggleTemp("C"));
 fahrenheitBtn.addEventListener("click", () => toggleTemp("F"));
 
 window.onload = loadRecentCities;
+
+searchBtn.addEventListener("click", () => {
+    const city = cityInput.value.trim(); // trim removes extra spaces
+    if (city === "") {
+        alert("Please enter the city name first.");
+        return;
+    }
+    getWeather(city);
+});
