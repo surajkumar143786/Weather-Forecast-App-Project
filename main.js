@@ -137,3 +137,23 @@ async function getCurrentLocationWeather() {
         showError("Permission denied for geolocation.");
     });
 }
+
+// --- Event listeners ---
+searchBtn.addEventListener("click", () => {
+    const city = cityInput.value.trim();
+    if (city) fetchWeather(city);
+});
+
+cityInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        const city = cityInput.value.trim();
+        if (city) fetchWeather(city);
+    }
+});
+
+currentLocationBtn.addEventListener("click", getCurrentLocationWeather);
+recentCities.addEventListener("change", () => fetchWeather(recentCities.value));
+celsiusBtn.addEventListener("click", () => toggleTemp("C"));
+fahrenheitBtn.addEventListener("click", () => toggleTemp("F"));
+
+window.onload = loadRecentCities;
