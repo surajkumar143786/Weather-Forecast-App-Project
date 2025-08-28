@@ -104,4 +104,36 @@ function displayWeather() {
         `;
         forecastContainer.appendChild(dayDiv);
     });
+}  
+
+// --- Toggle Celsius/Fahrenheit ---
+function toggleTemp(unit) {
+    tempUnit = unit;
+    displayWeather();
+}
+
+// --- Current location weather ---
+async function getCurrentLocationWeather() {
+    if (!navigator.geolocation) {
+        showError("Geolocation is not supported by your browser.");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        try {
+            clearError();
+            const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("Unable to fetch location weather.");
+            weatherData = await response.json();
+            displayWeather();
+            saveCity(weatherData.city.name);
+        } catch (error) {
+            showError(error.message);
+        }
+    }, () => {
+        showError("Permission denied for geolocation.");
+    });
 }
